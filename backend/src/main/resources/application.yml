@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: smart-academic-flow
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/smartacademicflow
+    username: saf_admin
+    password: saf_secret_2024
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    open-in-view: false
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      password: saf_redis_pass
+
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.mail.MailSenderAutoConfiguration
+      - org.springframework.boot.autoconfigure.mail.MailSenderValidatorAutoConfiguration
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+# JWT Configuration
+app:
+  jwt:
+    secret: ${JWT_SECRET:U21hcnRBY2FkZW1pY0Zsb3dKV1RTdXBlclNlY3JldEtleTIwMjRQcm9kdWN0aW9uS2V5TXVzdEJlMjU2Qml0cyEh}
+    expiration: ${JWT_EXPIRATION:86400000}
+  ai-service:
+    url: ${AI_SERVICE_URL:http://localhost:8000}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  datasource:
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+  data:
+    redis:
+      host: ${SPRING_REDIS_HOST}
+      port: ${SPRING_REDIS_PORT}
+      password: ${SPRING_REDIS_PASSWORD}
